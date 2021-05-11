@@ -38,9 +38,7 @@ def space_invader_game():
 
         def draw(self):
             # Ritar spelaren
-            self.hitbox = (self.x, self.y, self.width, self.height)
             win.blit(player_img, (self.x, self.y, self.width, self.height))
-            #pygame.draw.rect(win, RED, (self.hitbox), 2)
             self.move()
 
         def move(self):
@@ -93,8 +91,6 @@ def space_invader_game():
                 pygame.draw.rect(win, GREEN, (self.x, self.y - 20, self.width * (self.health/boss_start_health), 10))
 
                 # Hitbox
-                self.hitbox = (self.x, self.y, self.width, self.height)
-                #pygame.draw.rect(win, RED, (self.hitbox), 2)
                 self.move()
 
         def move(self):
@@ -132,8 +128,6 @@ def space_invader_game():
             pygame.draw.rect(win, RED, (self.x, self.y, self.width, self.height))
             self.move()
 
-            #self.hitbox = (self.x, self.y, self.width, self.height)
-            #pygame.draw.rect(win, BLUE, (self.hitbox), 2)
 
         def move(self):
             # Flyttar skotten
