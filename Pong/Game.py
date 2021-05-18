@@ -16,6 +16,8 @@ def Start_pong():
 
     # Start skärmen
     def redrawStart():
+        win.fill(BLACK)
+        
         # Texten som visas i mitten av skärmen
         Starttext = Font.render("Press any mouse button to start!", 1, WHITE)
         win.blit(Starttext, (WIDTH // 2 - Starttext.get_width() // 2, HEIGHT // 2 - Starttext.get_height()//2))
