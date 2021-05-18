@@ -16,6 +16,7 @@ def Start_pong():
 
     # Start skärmen
     def redrawStart():
+        # Fyller skärmen svart
         win.fill(BLACK)
         
         # Texten som visas i mitten av skärmen
