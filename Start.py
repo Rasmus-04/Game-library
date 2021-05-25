@@ -1,4 +1,3 @@
-from tkinter import *
 from Slutprojekt.Pong.Game import *
 from Slutprojekt.Turtle_race.Racing import *
 from Slutprojekt.Game_of_40.Game import *
@@ -94,8 +93,8 @@ def start_menu():
     # Skapar fönstret
     root = Tk()
     root.iconbitmap(icon_img)
-    root.title("Game library")
-    root.geometry("193x500")
+    root.title("Game Library")
+    root.geometry("194x500")
     root.config(bg="white")
 
     # Texten som visas över alla knappar

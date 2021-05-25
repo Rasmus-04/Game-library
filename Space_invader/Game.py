@@ -194,8 +194,9 @@ def space_invader_game():
 
     # Skapar invadersna
     def create_enemys():
-        for enemy in range(enemy_count):
-            enemy_list.append(ENEMY(enemy_randomx(), enemy_randomy(), 25, 25, enemy_vel, enemy_color()))
+        if status == "on":
+            for enemy in range(enemy_count):
+                enemy_list.append(ENEMY(enemy_randomx(), enemy_randomy(), 25, 25, enemy_vel, enemy_color()))
 
 
     def reset_boss():

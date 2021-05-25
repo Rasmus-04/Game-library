@@ -3,8 +3,7 @@ from Slutprojekt.Pong.config import *
 from Slutprojekt.Pong.funks import *
 
 
-
-
+# Start fönsteret
 def Start_pong():
     global win
 
@@ -45,6 +44,7 @@ def Start_pong():
     pygame.quit()
 
 
+# Spelet
 def pong():
     p1score, p2score = 0,0
     run = True
