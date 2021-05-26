@@ -142,7 +142,7 @@ def pong():
 
         #       Player 1 colistion
         # Kollar om bollen och player 1 har samma x värde
-        if p1.hitbox[0] + p1.Width*2 > ball.hitbox[0]:
+        if p1.hitbox[0] + p1.Width > ball.hitbox[0]:
             # Kollar om bollen och spelaren har samma y värde
             if p1.hitbox[1] < ball.hitbox[1] + p1.Height//2 and p1.hitbox[1] + p1.Height > ball.hitbox[1]:
                 # Byter håll på bollen
