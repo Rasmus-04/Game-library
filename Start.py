@@ -2,20 +2,21 @@ from Slutprojekt.Pong.Game import *
 from Slutprojekt.Turtle_race.Racing import *
 from Slutprojekt.Game_of_40.Game import *
 from Slutprojekt.Space_invader.Game import *
+from os import path
 
 
 # Bilderna
-icon_img = "D:\Python\Slutprojekt\Assets\icon.ico"
-pong_img = "D:\Python\Slutprojekt\Assets\Pong_img.png"
-turtle_race_img = "D:\Python\Slutprojekt\Assets\Turtle_img.png"
-game_of_40_img = "D:\Python\Slutprojekt\Assets\Game_of_40.png"
-space_invader_img = "D:\Python\Slutprojekt\Assets\Space_invader.png"
+icon_img = path.join("Assets", "icon.ico")
+pong_img = path.join("Assets", "Pong_img.png")
+turtle_race_img = path.join("Assets", "Turtle_img.png")
+game_of_40_img = path.join("Assets", "Game_of_40.png")
+space_invader_img = path.join("Assets", "Space_invader.png")
 
 
 # Funktioner
 # Kollar high scores för Space invaders
 def get_high_scores():
-    with open("D:\Python\Slutprojekt\Space_invader\high_scores.txt", "r") as f:
+    with open(path.join("Space_invader", "high_scores.txt"), "r") as f:
         return str(f.read())
 
 
