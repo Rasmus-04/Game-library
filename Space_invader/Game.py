@@ -1,3 +1,4 @@
+import os.path
 import time
 import pygame
 import random
@@ -20,12 +21,20 @@ def space_invader_game():
     CLOCK = pygame.time.Clock()
 
     # Laddar in alla bilder
-    bg_img = pygame.image.load("D:\Python\Slutprojekt\Space_invader\Assets\space_invaders_background.gif")
-    player_img = pygame.image.load("D:\Python\Slutprojekt\Space_invader\Assets\player.gif")
+    if __name__ == "__main__":
+        path_to_folder = "Assets"
+        high_score_file_path = "high_scores.txt"
+    else:
+        path_to_folder = "Space_invader\Assets"
+        high_score_file_path = "Space_invader\high_scores.txt"
+
+    bg_img = pygame.image.load(os.path.join(path_to_folder, "space_invaders_background.gif"))
+    player_img = pygame.image.load(os.path.join(path_to_folder, "player.gif"))
 
     for i in range(3):
-        invader_img.append(pygame.image.load(f"D:\Python\Slutprojekt\Space_invader\Assets\invader{i}.gif"))
-        boss_img.append(pygame.image.load(f"D:\Python\Slutprojekt\Space_invader\Assets\Boss_{i}.png"))
+        invader_img.append(pygame.image.load(os.path.join(path_to_folder, f"invader{i}.gif")))
+        boss_img.append(pygame.image.load(os.path.join(path_to_folder, f"Boss_{i}.png")))
+
 
 
     # Klasser
@@ -78,9 +87,9 @@ def space_invader_game():
         def draw(self):
             if boss_state:
                 # Ändrar färg på bossen beronde på hur mycket hp den har kvar
-                if self.health > 60:
+                if self.health > boss_start_health * 0.6:
                     self.img = boss_img[0]
-                elif self.health > 30:
+                elif self.health > boss_start_health * 0.3:
                     self.img = boss_img[1]
                 else:
                     self.img = boss_img[2]
@@ -168,7 +177,7 @@ def space_invader_game():
 
     # Spelar upp ljud
     def play_sound(sound_file):
-        pygame.mixer.Channel(1).play(pygame.mixer.Sound(f"D:\Python\Slutprojekt\Space_invader\Assets\{sound_file}.wav"))
+        pygame.mixer.Channel(1).play(pygame.mixer.Sound(os.path.join(path_to_folder, f"{sound_file}.wav")))
         pygame.mixer.Channel(1).set_volume(0.1)
 
 
@@ -209,7 +218,7 @@ def space_invader_game():
     # sätter alla värden till start värderna
     def reset():
         global run, score, status, enemy_count, timer, bullet_count, points_to_enemy, boss_bullets
-        global player_vel, points_until_new_enemy, enemy_vel, wave, boss_state
+        global player_vel, points_until_new_enemy, enemy_vel, wave, boss_state, boss_start_health
         run = True
         boss_state = False
         player.x = WIDTH//2 - 12.5
@@ -225,6 +234,7 @@ def space_invader_game():
         wave = 1
         enemy_vel = 0.5
         points_to_enemy = 100
+        boss_start_health = 100
         points_until_new_enemy = points_to_enemy
         bullet_count = 5
         reset_boss()
@@ -257,12 +267,12 @@ def space_invader_game():
 
     # Updaterar High score filen
     def update_high_score(score):
-        with open("D:\Python\Slutprojekt\Space_invader\high_scores.txt", "w") as f:
+        with open(high_score_file_path, "w") as f:
             f.write(score)
 
     # Returnar ditt high score
     def get_high_score():
-        with open("D:\Python\Slutprojekt\Space_invader\high_scores.txt", "r") as f:
+        with open(high_score_file_path, "r") as f:
             return int(f.read())
 
     # Ger random x värde för invaders
