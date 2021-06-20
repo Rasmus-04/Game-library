@@ -1,6 +1,8 @@
 # Fönstrets mått
 HEIGHT, WIDTH = 800, 800
 BORDER = 600
+audio_pos_x, audio_pos_y = 5, 5
+audio_icon_width, audio_icon_height = 55, 45
 
 # Färger
 BLACK = (0, 0, 0)
@@ -12,6 +14,7 @@ GREEN = (0, 255, 0)
 # Spel state
 run = True
 boss_state = False
+audio_state = True
 status = "on"
 
 # Listor

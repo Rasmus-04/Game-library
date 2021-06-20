@@ -12,6 +12,8 @@ def space_invader_game():
     pygame.init()
     pygame.font.init()
     pygame.mixer.init()
+    pygame.mixer.Channel(1).set_volume(0.1)
+
 
     # Skapar fönstret
     win = pygame.display.set_mode((HEIGHT, WIDTH))
@@ -30,6 +32,9 @@ def space_invader_game():
 
     bg_img = pygame.image.load(os.path.join(path_to_folder, "space_invaders_background.gif"))
     player_img = pygame.image.load(os.path.join(path_to_folder, "player.gif"))
+    audio_on_img = pygame.image.load(os.path.join(path_to_folder, "audio_on.png"))
+    audio_off_img = pygame.image.load(os.path.join(path_to_folder, "audio_off.png"))
+    menu_img = pygame.image.load(os.path.join(path_to_folder, "menu.png"))
 
     for i in range(3):
         invader_img.append(pygame.image.load(os.path.join(path_to_folder, f"invader{i}.gif")))
@@ -137,10 +142,40 @@ def space_invader_game():
             pygame.draw.rect(win, RED, (self.x, self.y, self.width, self.height))
             self.move()
 
-
         def move(self):
             # Flyttar skotten
             self.y += self.vel
+
+
+    class buttons:
+        def __init__(self, img, x, y, width, height, func):
+            self.x = x
+            self.y = y
+            self.img = img
+            self.width = width
+            self.height = height
+            self.func = func
+            self.pressed_state = False
+
+        def draw(self):
+            if not self.pressed_state:
+                win.blit(self.img, (self.x, self.y))
+            else:
+                win.blit(self.img, (self.x, self.y))
+
+            # Audio button hitbox
+            pygame.draw.rect(win, RED, (self.x, self.y, self.width, self.height), 2)
+
+            self.check_klick()
+
+        def check_klick(self):
+            for event in pygame.event.get():
+                if event.type == pygame.MOUSEBUTTONUP:
+                    mouseX, mouseY = pygame.mouse.get_pos()
+                    if mouseX > self.x and (mouseX < self.x + self.width):
+                        if mouseY > self.y and (mouseY < self.y + self.height):
+                            self.func()
+
 
 
     def draw_bullet():
@@ -150,7 +185,6 @@ def space_invader_game():
                 bullets.pop(index)
             # Ritar skotten
             bullet.draw()
-
 
 
     def start_meny():
@@ -164,21 +198,23 @@ def space_invader_game():
                     run = False
                     start = True
 
+                # kollar om användaren klickar på en mus knapp
+                if event.type == pygame.KEYDOWN or event.type == pygame.MOUSEBUTTONDOWN:
+                    start = True
+                    redraw_window()
+
             # skriver text på skärmen
             win.fill(BLACK)
             draw_text("press any mouse button to start", 0, 0, 60, "comicsans", True, False, True, True)
             pygame.display.update()
 
-            # kollar om användaren klickar på en mus knapp
-            if event.type == pygame.KEYDOWN or event.type == pygame.MOUSEBUTTONDOWN:
-                start = True
-                redraw_window()
+
 
 
     # Spelar upp ljud
     def play_sound(sound_file):
         pygame.mixer.Channel(1).play(pygame.mixer.Sound(os.path.join(path_to_folder, f"{sound_file}.wav")))
-        pygame.mixer.Channel(1).set_volume(0.1)
+        #pygame.mixer.Channel(1).set_volume(0.1)
 
 
     # Skriver text på skärmen
@@ -245,7 +281,7 @@ def space_invader_game():
     def pause():
         global run
 
-        # Skirer paused på skärmen
+        # Skriver paused på skärmen
         draw_text("PAUSED", 0, 0, 150, "comicsans", True, False, True, True),
         draw_text('Press "P" to un pause', 0, HEIGHT//2 + 75, 50,"comicsans", True, False, True, False)
         pygame.display.update()
@@ -293,6 +329,16 @@ def space_invader_game():
         else:
             return invader_img[0]
 
+    def switch_audio():
+        if audio_button.pressed_state:
+            audio_button.pressed_state = False
+            audio_button.img = audio_on_img
+            pygame.mixer.Channel(1).set_volume(0.1)
+        else:
+            audio_button.pressed_state = True
+            audio_button.img = audio_off_img
+            pygame.mixer.Channel(1).set_volume(0)
+
 
     # Updaterar skärmen
     def redraw_window():
@@ -321,6 +367,9 @@ def space_invader_game():
         if status == "over":
             game_over()
 
+        audio_button.draw()
+        meny_button.draw()
+
         # Om man möter en boss så ritas bossen och bossen skott
         if boss_state:
             boss.draw()
@@ -333,6 +382,8 @@ def space_invader_game():
     # Skapar Spelarna
     player = PLAYER(WIDTH//2 - 12.5, BORDER + 50, 25, 25)
     boss = BOSS(357.5, 100, 85, 85)
+    audio_button = buttons(audio_on_img, audio_pos_x, audio_pos_y, audio_icon_width, audio_icon_height, switch_audio)
+    meny_button = buttons(menu_img, WIDTH - 55, audio_pos_y, 50, 50, pause)
 
 
     reset()
@@ -471,8 +522,6 @@ def space_invader_game():
                         create_enemys()
                         reset_boss()
                         break
-
-
     reset()
     pygame.quit()
 
