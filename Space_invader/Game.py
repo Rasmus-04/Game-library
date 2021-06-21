@@ -164,18 +164,17 @@ def space_invader_game():
                 win.blit(self.img, (self.x, self.y))
 
             # Audio button hitbox
-            pygame.draw.rect(win, RED, (self.x, self.y, self.width, self.height), 2)
+            #pygame.draw.rect(win, RED, (self.x, self.y, self.width, self.height), 2)
 
             self.check_klick()
 
         def check_klick(self):
-            for event in pygame.event.get():
-                if event.type == pygame.MOUSEBUTTONUP:
-                    mouseX, mouseY = pygame.mouse.get_pos()
-                    if mouseX > self.x and (mouseX < self.x + self.width):
-                        if mouseY > self.y and (mouseY < self.y + self.height):
+            mouseX, mouseY = pygame.mouse.get_pos()
+            if mouseX > self.x and (mouseX < self.x + self.width):
+                if mouseY > self.y and (mouseY < self.y + self.height):
+                    for event in pygame.event.get():
+                        if event.type == pygame.MOUSEBUTTONUP:
                             self.func()
-
 
 
     def draw_bullet():
@@ -205,7 +204,7 @@ def space_invader_game():
 
             # skriver text på skärmen
             win.fill(BLACK)
-            draw_text("press any mouse button to start", 0, 0, 60, "comicsans", True, False, True, True)
+            draw_text("press any button to start", 0, 0, 60, "comicsans", True, False, True, True)
             pygame.display.update()
 
 
@@ -253,8 +252,8 @@ def space_invader_game():
 
     # sätter alla värden till start värderna
     def reset():
-        global run, score, status, enemy_count, timer, bullet_count, points_to_enemy, boss_bullets
-        global player_vel, points_until_new_enemy, enemy_vel, wave, boss_state, boss_start_health
+        global run, score, status, enemy_count, timer, bullet_count, points_to_enemy, boss_bullets, audio_button
+        global player_vel, points_until_new_enemy, enemy_vel, wave, boss_state, boss_start_health, meny_button
         run = True
         boss_state = False
         player.x = WIDTH//2 - 12.5
@@ -273,6 +272,9 @@ def space_invader_game():
         boss_start_health = 100
         points_until_new_enemy = points_to_enemy
         bullet_count = 5
+        audio_button = buttons(audio_on_img, audio_pos_x, audio_pos_y, audio_icon_width, audio_icon_height,
+                               switch_audio)
+        meny_button = buttons(menu_img, WIDTH - 55, audio_pos_y, 50, 50, pause)
         reset_boss()
         create_enemys()
         redraw_window()
@@ -295,10 +297,20 @@ def space_invader_game():
                     run = False
                     paused = False
 
+                if event.type == pygame.MOUSEBUTTONUP:
+                    pos = pygame.mouse.get_pos()
+                    if pos[0] > meny_button.x and pos[0] < (meny_button.x + meny_button.width):
+                        if pos[1] > meny_button.y and pos[1] < (meny_button.y + meny_button.height):
+                            paused = False
+
             # Kollar om spelaren vill sluta pausea
             key = pygame.key.get_pressed()
             if key[pygame.K_p]:
                 paused = False
+
+            meny_button.draw()
+            audio_button.draw()
+            pygame.display.update()
 
 
     # Updaterar High score filen
@@ -367,8 +379,9 @@ def space_invader_game():
         if status == "over":
             game_over()
 
-        audio_button.draw()
         meny_button.draw()
+        audio_button.draw()
+
 
         # Om man möter en boss så ritas bossen och bossen skott
         if boss_state:
@@ -444,14 +457,14 @@ def space_invader_game():
         # Key binds
         keys = pygame.key.get_pressed()
 
-        if keys[pygame.K_LEFT] and player.x > 103:
+        if (keys[pygame.K_LEFT] or keys[pygame.K_a]) and player.x > 103:
             player_vel = -start_player_vel
 
         if player.x < 100 and player_vel < 0:
             player_vel = 0
 
 
-        if keys[pygame.K_RIGHT] and player.x < BORDER + 97 - player.width:
+        if (keys[pygame.K_RIGHT] or keys[pygame.K_d]) and player.x < BORDER + 97 - player.width:
             player_vel = +start_player_vel
 
         if player.x > (BORDER + 100 - player.width) and player_vel > 0:
