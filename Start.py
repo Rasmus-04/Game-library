@@ -2,6 +2,7 @@ from Slutprojekt.Pong.Game import *
 from Slutprojekt.Turtle_race.Racing import *
 from Slutprojekt.Game_of_40.Game import *
 from Slutprojekt.Space_invader.Game import *
+from Slutprojekt.Tetris.tetris import *
 from os import path
 
 
@@ -110,7 +111,7 @@ def start_menu():
     btn("Info", 3, 1, 25, 10, root, lambda: open_win(game_of_40_info, root))
     btn("Space Invader", 4, 0, 4, 10, root, space_invader_game)
     btn("Info", 4, 1, 25, 10, root, lambda: open_win(space_invader_info, root))
-    btn("Game", 5, 0, 25, 10, root)
+    btn("Game", 5, 0, 25, 10, root, main_menu)
     btn("Info", 5, 1, 25, 10, root)
     btn("Game", 6, 0, 25, 10, root)
     btn("Info", 6, 1, 25, 10, root)
