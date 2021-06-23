@@ -408,6 +408,7 @@ def main(win):
 
 def main_menu():
     global win
+    pygame.font.init()
     win = pygame.display.set_mode((s_width, s_height))
     run = True
     while run:
